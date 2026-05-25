@@ -1,0 +1,27 @@
+{
+  "file": "queries/sample_2_failure_rate.sql",
+  "reviewed_at": "2026-05-25T18:20:31.448146",
+  "issues_found": 2,
+  "review": {
+    "issues": [
+      {
+        "severity": "Medium",
+        "category": "Correctness",
+        "title": "Incorrect failure rate calculation",
+        "line": "ROUND(100.0 * SUM(CASE WHEN status = 'FAILED' THEN 1 ELSE 0 END) / COUNT(*), 2) as failure_rate_pct",
+        "problem": "The failure rate calculation is incorrect because it uses COUNT(*) which includes all transactions, not just COMPLETED ones.",
+        "fix": "ROUND(100.0 * SUM(CASE WHEN status = 'FAILED' THEN 1 ELSE 0 END) / SUM(CASE WHEN status = 'COMPLETED' THEN 1 ELSE 0 END), 2) as failure_rate_pct"
+      },
+      {
+        "severity": "Low",
+        "category": "Readability",
+        "title": "Lack of comments",
+        "line": "Entire query",
+        "problem": "The query lacks comments explaining the logic, which makes it harder to understand for other developers.",
+        "fix": "Add comments explaining the purpose of each part of the query."
+      }
+    ],
+    "corrected_sql": "-- Sample Query 2: Transaction failure rate by payment method\nSELECT \n    payment_method,\n    COUNT(*) as total_transactions,\n    SUM(CASE WHEN status = 'FAILED' THEN 1 ELSE 0 END) as failed_count,\n    ROUND(100.0 * SUM(CASE WHEN status = 'FAILED' THEN 1 ELSE 0 END) / SUM(CASE WHEN status = 'COMPLETED' THEN 1 ELSE 0 END), 2) as failure_rate_pct\nFROM fact_transactions\nGROUP BY payment_method\nORDER BY failure_rate_pct DESC;",
+    "summary": "The query has a correctness issue with the failure rate calculation and lacks comments for readability."
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "file": "queries/sample_3_customer_tier.sql",
+  "reviewed_at": "2026-05-25T18:20:39.754744",
+  "issues_found": 2,
+  "review": {
+    "issues": [
+      {
+        "severity": "Low",
+        "category": "Readability",
+        "title": "Missing comments",
+        "line": "All",
+        "problem": "The query lacks comments explaining the purpose and logic of the query.",
+        "fix": "-- Sample Query 3: Customer transaction counts by tier\nSELECT \n    dc.tier,\n    COUNT(*) as transaction_count,\n    COUNT(DISTINCT dc.customer_id) as unique_customers,\n    AVG(ft.amount) as avg_transaction_amount\nFROM fact_transactions ft\nJOIN dim_customer dc ON ft.customer_id = dc.customer_id\nWHERE ft.status = 'COMPLETED'\nGROUP BY dc.tier\nORDER BY transaction_count DESC;"
+      },
+      {
+        "severity": "Low",
+        "category": "Readability",
+        "title": "Inconsistent naming",
+        "line": "All",
+        "problem": "The aliases used for the tables are not consistent with typical naming conventions (e.g., 'ft' for 'fact_transactions', 'dc' for 'dim_customer').",
+        "fix": "-- Sample Query 3: Customer transaction counts by tier\nSELECT \n    dc.tier,\n    COUNT(*) as transaction_count,\n    COUNT(DISTINCT dc.customer_id) as unique_customers,\n    AVG(ft.amount) as avg_transaction_amount\nFROM sigma_analytics.fact_transactions ft\nJOIN sigma_analytics.dim_customer dc ON ft.customer_id = dc.customer_id\nWHERE ft.status = 'COMPLETED'\nGROUP BY dc.tier\nORDER BY transaction_count DESC;"
+      }
+    ],
+    "corrected_sql": "-- Sample Query 3: Customer transaction counts by tier\nSELECT \n    dc.tier,\n    COUNT(*) as transaction_count,\n    COUNT(DISTINCT dc.customer_id) as unique_customers,\n    AVG(ft.amount) as avg_transaction_amount\nFROM sigma_analytics.fact_transactions ft\nJOIN sigma_analytics.dim_customer dc ON ft.customer_id = dc.customer_id\nWHERE ft.status = 'COMPLETED'\nGROUP BY dc.tier\nORDER BY transaction_count DESC;",
+    "summary": "The query is logically correct and performs well, but readability can be improved with comments and consistent naming conventions."
+  }
+}
