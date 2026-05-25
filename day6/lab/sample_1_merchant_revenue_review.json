@@ -1,0 +1,35 @@
+{
+  "file": "queries/sample_1_merchant_revenue.sql",
+  "reviewed_at": "2026-05-25T18:20:25.712247",
+  "issues_found": 3,
+  "review": {
+    "issues": [
+      {
+        "severity": "Low",
+        "category": "Readability",
+        "title": "Missing comment on logic",
+        "line": "5",
+        "problem": "The SQL query lacks comments explaining the logic behind the CASE statement and the GROUP BY clause.",
+        "fix": "-- Calculating revenue by summing completed transactions"
+      },
+      {
+        "severity": "Medium",
+        "category": "Correctness",
+        "title": "Potential incorrect revenue calculation",
+        "line": "4",
+        "problem": "The revenue calculation might be incorrect if there are NULL values in the 'amount' column. It should handle NULLs explicitly.",
+        "fix": "SUM(COALESCE(CASE WHEN t.status = 'COMPLETED' THEN t.amount ELSE 0 END, 0))"
+      },
+      {
+        "severity": "Low",
+        "category": "Readability",
+        "title": "Inconsistent naming",
+        "line": "3",
+        "problem": "The alias 't' for 'fact_transactions' and 'm' for 'dim_merchant' is not consistently used in comments.",
+        "fix": "-- Using 't' for transactions and 'm' for merchants"
+      }
+    ],
+    "corrected_sql": "-- Sample Query 1: Total revenue by merchant\nSELECT \n    m.merchant_name,\n    SUM(COALESCE(CASE WHEN t.status = 'COMPLETED' THEN t.amount ELSE 0 END, 0)) AS revenue\nFROM fact_transactions t\nJOIN dim_merchant m ON t.merchant_id = m.merchant_id\nGROUP BY m.merchant_name\nORDER BY revenue DESC;\n-- Calculating revenue by summing completed transactions\n-- Using 't' for transactions and 'm' for merchants",
+    "summary": "The query is mostly correct but could benefit from additional comments and handling of potential NULL values in the 'amount' column."
+  }
+}
