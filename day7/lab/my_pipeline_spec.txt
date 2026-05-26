@@ -1,0 +1,26 @@
+Team 5 — Regulatory Compliance Report
+
+Overview:
+Build a daily reporting pipeline that ingests all Sigma transaction records, applies compliance rules, and writes an audit-ready summary table for finance.
+
+Inputs:
+- Raw transaction feed from S3 containing transaction_id, customer_id, merchant_id, amount, status, payment_method, transaction_date, and currency.
+- Merchant master data for classification and name enrichment.
+
+Transformations:
+- Cast all incoming fields to correct types and perform data quality checks.
+- Flag transactions over 50000 as requires_review in a new compliance_flag column.
+- Calculate daily totals by payment_method and count high-risk transactions.
+- Preserve all transaction statuses, including FAILED and PENDING, for audit traceability.
+
+Outputs:
+- Gold table: compliance_daily_summary with report_generated_at, payment_method, total_amount, total_count, reviewed_count, and compliance_flag distribution.
+- Bronze and Silver layers retain raw and cleaned transaction data for downstream audit use.
+
+Quality Checks:
+- Verify primary key transaction_id is not null.
+- Validate currency values are within expected ISO codes.
+- Ensure no duplicate transactions remain after deduplication.
+
+Schedule:
+- Run once daily after midnight to capture the previous day’s transactions and refresh the Gold compliance report.

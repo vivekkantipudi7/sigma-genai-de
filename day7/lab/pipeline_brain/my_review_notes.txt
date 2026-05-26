@@ -1,0 +1,19 @@
+Fixed pipeline review notes:
+
+1. Added explicit error handling:
+   - Wrapped the Bronze, Silver, and Gold stages in `try/except` logic via `safe_run()`.
+   - Errors now report stage names and exception details before reraising.
+
+2. Removed hardcoded paths:
+   - Introduced CLI arguments and environment-variable defaults for all input/output paths.
+   - This allows the pipeline to run against different environments without changing code.
+
+3. Added row count logging:
+   - Logged row counts after Bronze read, after Silver cast, after Silver filter, after Silver dedup, and after Silver enrichment.
+
+4. Added basic schema validation:
+   - Silver transform validates that required Bronze columns exist before continuing.
+
+5. Corrected Spark transformation APIs:
+   - Replaced broken rank expression with a proper `Window` + `row_number()` deduplication.
+   - Updated Gold customer LTV logic to compute preferred payment method safely.
