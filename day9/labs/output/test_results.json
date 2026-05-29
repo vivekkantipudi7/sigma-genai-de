@@ -1,0 +1,11 @@
+{
+  "check": "testing",
+  "test_file": "/Users/as-mac-1175/Desktop/Sigmoid-GenAI/day9/labs/output/test_challenge_pipeline.py",
+  "tests_ran": 0,
+  "passed": 0,
+  "failed": 0,
+  "errors": 0,
+  "pass_threshold": 2,
+  "check_passed": false,
+  "pytest_output": "/Users/as-mac-1175/Desktop/Sigmoid-GenAI/day9/labs/competitive_build/venv/bin/python3: No module named pytest\n"
+}
