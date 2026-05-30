@@ -52,6 +52,7 @@ EXPECTED_FILES = {
         "devops_brain/testing_report.json":       "Tests",
         "devops_brain/ci_slo_report.json":        "CI/SLO",
         "devops_brain/observability_report.json": "Observe",
+        "devops_brain/competitive/scorecard.json": "Ship",
     },
 }
 
